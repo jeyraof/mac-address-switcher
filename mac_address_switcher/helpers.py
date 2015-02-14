@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
-import uuid
 import os
+import shelve
 import sys
+import uuid
 
-
-def get_current_node():
-    node = uuid.getnode()
-    hex_node = hex(node)
-    particle_size = 2
-    hex_list = [hex_node[j:j+particle_size].capitalize() for j in range(2, len(hex_node), particle_size)]
-    return u':'.join(hex_list)
+from . import constants
 
 
 def user_is_root():
@@ -37,3 +32,25 @@ def yes_or_no(message, default=True):
 
 def relaunch_with_sudo():
     os.execvp("sudo", ["sudo"] + sys.argv)
+
+
+def initialize(dbm):
+    dbm['Original'] = get_current_node()
+    dbm['address_list'] = []
+    dbm.sync()
+    return dbm
+
+
+def load_db():
+    dbm = shelve.open(constants.DB_FILE)
+    if not dbm:
+        dbm = initialize(dbm)
+    return dbm
+
+
+def get_current_node():
+    node = uuid.getnode()
+    hex_node = hex(node)
+    particle_size = 2
+    hex_list = [hex_node[j:j+particle_size].capitalize() for j in range(2, len(hex_node), particle_size)]
+    return u':'.join(hex_list)
