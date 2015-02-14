@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from .helpers import get_current_node, user_is_root, yes_or_no, relaunch_with_sudo
+from .helpers import user_is_root, yes_or_no, relaunch_with_sudo, load_db, initialize, get_current_node
+from .menu import Menu
 
 
 def switch():
@@ -12,4 +13,12 @@ def switch():
         else:
             exit()
 
+    # Load DB
+    db = load_db()
+
+    # Draw menu
+    m = Menu(db=db, current_node=get_current_node())
+
+    # Sync DB
+    db.close()
 
