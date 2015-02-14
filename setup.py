@@ -14,16 +14,13 @@ def read_me():
     with codecs.open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
         return f.read()
 
-
-def get_version():
-    with codecs.open(os.path.join(os.path.dirname(__file__), 'VERSION')) as f:
-        return f.read()
+from mac_address_switcher.version import VERSION
 
 setup(
     name='mswitcher',
     packages=['mac_address_switcher'],
     data_files=[('', ['README.rst', 'VERSION'])],
-    version=get_version(),
+    version=VERSION,
     description='Mac address switcher',
     long_description=read_me(),
     license='No license',
