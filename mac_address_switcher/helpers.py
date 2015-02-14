@@ -12,7 +12,7 @@ def get_current_node():
     return u':'.join(hex_list)
 
 
-def is_user_root():
+def user_is_root():
     return os.getuid() == 0
 
 
