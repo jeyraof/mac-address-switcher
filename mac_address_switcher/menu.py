@@ -6,6 +6,7 @@ https://github.com/LyleScott/Python-curses-Scrolling-Example/blob/master/curses_
 """
 
 import curses
+import os
 
 
 class Menu:
@@ -21,6 +22,9 @@ class Menu:
     def __init__(self, db, current_node):
         self.db = db
         self.current_node = current_node
+        self.after = None
+        self.selected_address = None
+        self.running = False
 
         self.screen = curses.initscr()
         curses.noecho()
@@ -44,24 +48,24 @@ class Menu:
         self.run()
 
     def run(self):
+        self.running = True
         try:
-            while True:
+            while self.running:
                 self.draw()
-
-                # get user command
                 c = self.screen.getch()
                 self.key_hook(c)
 
-                # TODO: add action
         except KeyboardInterrupt:
             self.close()
 
     def define_output_list(self):
         self.output_list = self.db['address_list']
+        self.output_list.insert(0, ('New Mac Address', ''))
+        self.output_list.append(('Exit', ''))
         self.output_list_length = len(self.output_list)
 
     def draw(self):
-        self.screen.erase()  # Clear screen
+        self.screen.erase()
         self.draw_title()
 
         top = self.top_line_idx
@@ -73,6 +77,10 @@ class Menu:
                 text_style = self.text_highlight
             else:
                 text_style = self.text_normal
+
+            if value == self.current_node:
+                value += ' (now)'
+
             self.screen.addstr(idx + self.title_size, 4, self.output_format.format(idx=format(line_num, '03'),
                                                                                    key=key,
                                                                                    value=value), text_style)
@@ -99,10 +107,24 @@ class Menu:
             if self.current_line_idx == bottom and bottom < self.output_list_length:
                 self.top_line_idx += 1
 
+        elif c == self.SPACE_KEY or c == ord('\n'):
+            skey, sval = self.output_list[self.current_line_idx]
+            if skey == 'New Mac Address' and sval == '':
+                self.after = 'new'
+            elif skey == 'Exit' and sval == '':
+                self.after = 'exit'
+            else:
+                self.after = 'switch'
+                self.selected_address = sval
+
+            self.close()
+
         elif c == 27:
             self.close()
 
     def close(self):
+        self.running = False
+        self.screen.clear()
         curses.initscr()
         curses.nocbreak()
         curses.echo()

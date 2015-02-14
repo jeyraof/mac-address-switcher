@@ -54,3 +54,22 @@ def get_current_node():
     particle_size = 2
     hex_list = [hex_node[j:j+particle_size].capitalize() for j in range(2, len(hex_node), particle_size)]
     return u':'.join(hex_list)
+
+
+def switch_address(address):
+    os.system('sudo ifconfig en0 ether {address}'.format(address=address))
+    os.system("sudo ifconfig en0 down")
+    os.system("sudo ifconfig en0 up")
+    os.system("sudo ifconfig en0")
+
+
+def new_address_on_db(dbm):
+    sys.stdout.write('New Mac Address\n')
+    sys.stdout.write(' Name: ')
+    key = raw_input().strip()
+    sys.stdout.write(' Mac Address: ')
+    val = raw_input().strip()
+    address_list = dbm['address_list']
+    address_list.append((key, val))
+    dbm['address_list'] = address_list
+
