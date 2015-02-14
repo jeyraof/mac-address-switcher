@@ -37,4 +37,12 @@ setup(
             'mswitcher = mac_address_switcher:switch',
         ],
     },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Environment :: MacOS X',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: Utilities',
+    ],
 )
