@@ -19,7 +19,7 @@ from mac_address_switcher.version import VERSION
 setup(
     name='mswitcher',
     packages=['mac_address_switcher'],
-    data_files=[('', ['README.rst', 'VERSION'])],
+    data_files=[('', ['README.rst'])],
     version=VERSION,
     description='Mac address switcher',
     long_description=read_me(),
