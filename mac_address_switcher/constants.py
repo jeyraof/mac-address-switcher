@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-DB_FILE = '~/.mswitcher_data'
+DB_FILE = '/var/db/.mswitcher_data'
