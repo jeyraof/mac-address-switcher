@@ -22,7 +22,7 @@ def get_version():
 setup(
     name='mswitcher',
     packages=['mac_address_switcher'],
-    data_files=[('', ['README.rst'])],
+    data_files=[('', ['README.rst', 'VERSION'])],
     version=get_version(),
     description='Mac address switcher',
     long_description=read_me(),
